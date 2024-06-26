@@ -1,0 +1,22 @@
+{
+	"name": "systemsdk/docker-apache-php-laravel-tools",
+	"description": "",
+	"require": {
+		"php": "^8.3.0"
+	},
+	"require-dev": {
+		"rector/rector": "1.1.*",
+		"driftingly/rector-laravel": "1.2.*",
+		"roave/security-advisories": "dev-latest"
+	},
+	"config": {
+		"allow-plugins": true,
+		"platform": {
+			"php": "8.3.0"
+		},
+		"preferred-install": {
+			"*": "dist"
+		},
+		"sort-packages": true
+	}
+}

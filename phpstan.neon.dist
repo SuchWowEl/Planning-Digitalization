@@ -1,0 +1,10 @@
+parameters:
+    # The level 8 is the highest level
+    level: max
+    paths:
+        - app
+        - tests
+    editorUrl: '%%file%%:%%line%%'
+    checkExplicitMixed: false
+includes:
+    - tools/02_phpstan/vendor/larastan/larastan/extension.neon
