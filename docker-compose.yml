@@ -39,7 +39,7 @@ services:
         MYSQL_ROOT_PASSWORD: secret
         MYSQL_DATABASE: laravel
       ports:
-        - "33061:3306"
+        - "5678:3306"
       volumes:
         - ./storage/mysql-data:/var/lib/mysql:delegated
         - ./docker/dev/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql

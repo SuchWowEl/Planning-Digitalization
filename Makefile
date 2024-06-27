@@ -1,4 +1,4 @@
-export COMPOSE_PROJECT_NAME=environment4
+export COMPOSE_PROJECT_NAME=lamp-stackz
 export WEB_PORT_HTTP=80
 export WEB_PORT_SSL=443
 export XDEBUG_CONFIG=main
