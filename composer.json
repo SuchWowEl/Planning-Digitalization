@@ -31,7 +31,8 @@
 		"backpack/crud": "^6.7",
 		"backpack/theme-tabler": "*",
 		"laravel/framework": "^11.9",
-		"laravel/tinker": "^2.9"
+		"laravel/tinker": "^2.9",
+		"livewire/livewire": "^3.5"
 	},
 	"require-dev": {
 		"backpack/generators": "^4.0",
