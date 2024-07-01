@@ -1,6 +1,6 @@
-<div class="h-[calc(100vh-4rem)] w-full bg-sky-500 text-white lg:px-32 sm:px-24">
+<div class="h-[calc(100vh-4rem)] w-full bg-sky-500 text-white lg:px-32 px-0">
     <div class="md:h-full w-full flex flex-row flex-wrap">
-        <div class="md:h-full h-36 md:w-3/5 w-full text-white md:text-5xl text-3xl flex flex-col items-center justify-center rounded">
+        <div class="md:h-full h-36 md:w-3/5 w-full text-white lg:text-5xl md:text-4xl text-3xl flex flex-col items-center justify-center rounded">
             <div class="mb-5">
                 Welcome!
             </div>
@@ -20,8 +20,7 @@
             @endphp
 
             @foreach ($pair as $entry)
-            <a href="{{$entry[0]}}" class="md:h-24 min-h-36 bg-white hover:bg-green-600 md:text-2xl text-3xl text-sky-600 hover:text-white transition flex flex-col items-center justify-center
-            rounded border-2 hover:border-white text-center">
+            <a href="{{$entry[0]}}" class="md:h-24 min-h-36 bg-white hover:bg-green-600 md:text-2xl text-2xl text-sky-600 hover:text-white transition flex flex-col items-center justify-center rounded border-2 border-white text-center">
                 {{$entry[1]}}
             </a>
             @endforeach
