@@ -13,7 +13,7 @@
             <!-- h-36  -->
             @php
             $pair = [
-                [url('ppa'), 'Add another PPA'],
+                [url('ppa'), 'Add PPA'],
                 [url('aip'), 'View AIP'],
                 [backpack_url(''), 'Admin Dashboard']
             ]
