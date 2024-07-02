@@ -1,3 +1,15 @@
+# Side note:
+For Dev environment (not yet tested for staging or prod), install `npm` then run in the directory:
+```
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p 
+```
+and run:
+```
+npm run dev
+```
+so that Vite will do its thing "supplying" tailwind
+
 # PHP Laravel environment
 Docker environment required to run Laravel (based on official php and mysql docker hub repositories).
 
