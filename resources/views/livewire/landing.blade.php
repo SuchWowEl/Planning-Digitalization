@@ -20,7 +20,7 @@
             @endphp
 
             @foreach ($pair as $entry)
-            <a href="{{$entry[0]}}" class="md:h-24 min-h-36 bg-white hover:bg-green-600 md:text-2xl text-2xl text-sky-600 hover:text-white transition flex flex-col items-center justify-center rounded border-2 border-white text-center">
+            <a href="{{$entry[0]}}" class="md:h-24 min-h-36 bg-white hover:bg-green-600 md:text-2xl text-2xl text-sky-600 hover:text-white transition flex flex-col items-center justify-center rounded-xl border-2 border-white hover:border-green-600 text-center">
                 {{$entry[1]}}
             </a>
             @endforeach
