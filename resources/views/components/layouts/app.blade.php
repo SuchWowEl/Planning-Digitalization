@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         @vite('resources/css/app.css')
 
-        <title>{{ $title ?? 'Page Title' }}</title>
+        <title>CPDO - {{ $title ?? 'Page Title' }}</title>
     </head>
     <body>
         <livewire:header/>

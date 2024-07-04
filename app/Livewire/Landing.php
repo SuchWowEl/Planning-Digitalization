@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class Landing extends Component
 {
-    #[Title('CPDO Planning')]
+    #[Title('Home')]
     public function render()
     {
         return view('livewire.landing');
