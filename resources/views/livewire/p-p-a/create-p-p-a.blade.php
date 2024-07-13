@@ -1,4 +1,3 @@
-<div class="min-h-[calc(100vh-4rem)] w-full bg-sky-500 lg:px-32 px-3 pt-4">
     <form class="gap-4 flex flex-col" x-data="{ ppa_stat: ''}" x-init="$watch('ppa_stat',
             value => ( (value == 'routine') ?
                         (   $refs.impl1.disabled=true,
@@ -8,6 +7,7 @@
                             $refs.impl2.disabled=false
                         ) )
         )">
+<div class="min-h-[calc(100vh-4rem)] w-full bg-sky-200 lg:px-32 px-3 pt-4">
         <div class="border-2 border-white h-full w-full bg-white text-black rounded-md p-6 shadow-lg">
             <div class="flex flex-row flex-wrap w-full items-center justify-between">
                 @php
@@ -27,7 +27,7 @@
                 @endphp
 
                 <div class="flex flex-row">
-                <label for="status" class="mr-5">PPA status:</label>
+                <label for="status" class="mr-5">PPA Status:</label>
                 @foreach ($ppa_statuses as $entry => $value)
                 <div class="flex align-middle">
                     <input type="radio" id="{{ $entry }}" name="ppa_status" value="{{ $entry }}" x-model="ppa_stat" required>
