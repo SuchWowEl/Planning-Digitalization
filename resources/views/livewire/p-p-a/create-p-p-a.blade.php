@@ -72,7 +72,7 @@
                 @endforeach
             </div>
         </div>
-        <div class="border-2 border-white h-full w-full bg-white text-black rounded-md p-6 shadow-lg">
+        @include('details_section')
             @php
                 $details_string = [
                     "title" => "PPA Name/Title",
