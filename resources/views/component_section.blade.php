@@ -4,6 +4,7 @@
             <!-- for peso: ₱ -->
             <div class="flex flex-row w-full gap-1">
                 <label class="w-28 text-right">City fund:</label>
+                <!-- x-model="" -->
                 <input class="w-[calc(20rem-7rem)] border-2 rounded-md px-2 cursor-not-allowed" disabled value="0"></input>
             </div>
             <div class="flex flex-row w-full gap-1">
@@ -49,53 +50,50 @@
                 <template x-for="(field, index) in comp" :key="index" x-init="console.log(comp)">
                     <!--  TODO: make bottom part of table rounded -->
                     <div :class="[(index % 2) ? 'bg-slate-200':'bg-slate-100', comp.length-1 == index ? 'rounded-b-lg border-b-2' : '']" class="flex flex-row min-h-16 w-[2829px] border-l-2 border-black">
-                        <textarea type="text" x-model="comp[index]['name']" :name="index" class="bg-inherit border-t-2 border-black shrink-0 grow-0 focus:outline-blue-400 w-[300px] min-h-full px-1 resize-none"></textarea>
+                        <textarea type="text" x-model="comp[index]['name']" :name="'comp['+index+'][name]'" class="bg-inherit border-t-2 border-black shrink-0 grow-0 focus:outline-blue-400 w-[300px] min-h-full px-1 resize-none"></textarea>
 
                         <!-- excluding PPA component -->
                         <div class="flex flex-wrap w-[2250px] divide-y-2 divide-black border-pink-200">
                             <template x-for="(body,i) in comp[index]['component']" :key="i">
                                 <div class="flex flex-row divide-x-2 divide-black bg-inherit">
+                                <template x-for="(value, key) of $wire.headers" :key="key">
                                     <!-- excluding output & component actions -->
-                                    <template x-for="(value, key) of $wire.headers" :key="key">
                                         <!-- details 🤓 -->
                                         <div
                                             :class="['source_of_fund', 'r_office', 'o_actions', 'c_actions'].includes(key) ? 'w-[250px]': 'w-[200px]' "
                                         >
+                                            <template x-if="key == 'oe_acode'">
+                                                <textarea class="w-full h-full cursor-pointer text-wrap bg-inherit min-h-24 w-full flex justify-center items-center text-center resize-none" :id="'comp['+index+'][component]['+i+']['+key+']'" :name="'comp['+index+'][component]['+i+']['+key+']'" type="text" @focus="comp_oe_onclick([index,i,key])" x-model="comp[index]['component'][i][key]">
+                                                </textarea>
+                                            </template>
                                             <template x-if="key == 'source_of_fund'">
-                                                <select x-model="comp[index]['component'][i][value]" :name="index+'.'+i+'.'+key"
+                                                <select x-model="comp[index]['component'][i][value]" :name="'comp['+index+'][component]['+i+']['+key+']'"
                                                 class="bg-inherit h-full w-full px-2"
                                                 >
                                                     <!-- NOTE: This setup means that when a "source of fund" or sof gets unclicked, -->
                                                     <!-- it won't be removed from the alpine variable. This SHOULD be fine if data sent to server -->
                                                     <!-- will not rely on alpine and instead on the input fields. -->
-                                                    <template x-for="chosen in sof">
+                                                    <template x-for="chosen in ssof">
                                                         <option :value="chosen" x-text="chosen"></option>
                                                     </template>
                                                 </select>
                                             </template>
                                             <template x-if="['ps', 'mooe', 'co'].includes(key)">
-                                                <input x-model="comp[index]['component'][i][key]" :name="index+'.'+i+'.'+key"
+                                                <input x-model="comp[index]['component'][i][key]" :name="'comp['+index+'][component]['+i+']['+key+']'"
                                                 @blur="row_total(index, i)"
                                                 class="bg-inherit h-full w-full"
                                                 x-init="set_price(index, i, key)"
-                                                pattern="[1-9][0-9]*\.[0-9]{2}"
                                                 ></input>
                                             </template>
                                             <template x-if="key == 'total'">
-                                                <input x-model="comp[index]['component'][i][key]" :name="index+'.'+i+'.'+key"
+                                                <input x-model="comp[index]['component'][i][key]" :name="'comp['+index+'][component]['+i+']['+key+']'"
                                                 class="bg-inherit h-full w-full cursor-not-allowed"
                                                 x-init="row_total(index, i)"
                                                 disabled=true
                                                 ></input>
                                             </template>
-                                            <template x-if="key == 'oe_acode'">
-                                                <textarea x-model="comp[index]['component'][i][key]" :name="index+'.'+i+'.'+key"
-                                                class="bg-inherit min-h-24 w-full flex justify-center items-center resize-none"
-                                                @blur="oe_push(index, i, $el)"
-                                                ></textarea>
-                                            </template>
                                             <template x-if="! ['oe_acode', 'ps', 'mooe', 'co', 'source_of_fund', 'total'].includes(key)">
-                                                <textarea x-model="comp[index]['component'][i][key]" :name="index+'.'+i+'.'+key"
+                                                <textarea x-model="comp[index]['component'][i][key]" :name="'comp['+index+'][component]['+i+']['+key+']'"
                                                 class="bg-inherit min-h-24 w-full flex justify-center items-center resize-none"
                                                 ></textarea>
                                             </template>
@@ -103,7 +101,7 @@
                                     </template>
                                     <!-- output actions -->
                                     <div class="w-[150px] min-h-16 bg-inherit flex justify-center items-center border-black" :id="index+'.'+i+'.output'">
-                                        <button @click="remove_output(index, i)" :disabled="comp[index]['component'].length == 1" :class="comp[index]['component'].length == 1 ? 'bg-red-200 cursor-not-allowed' : 'bg-red-500 outline-none outline-offset-0 hover:outline-2 hover:outline-red-300'" class="w-min p-2 flex flex-row justify-center items-center gap-1 text-white text-center rounded-md transition transition-all" type="button">
+                                        <button @click="remove_output(index, i)" :disabled="comp[index]['component'].length == 1" :class="Object.keys(comp[index]['component']).length == 1 ? 'bg-red-200 cursor-not-allowed' : 'bg-red-500 outline-none outline-offset-0 hover:outline-2 hover:outline-red-300'" class="w-min p-2 flex flex-row justify-center items-center gap-1 text-white text-center rounded-md transition transition-all" type="button">
                                             <i class="fa-solid fa-trash-can"></i> Output
                                         </button>
                                     </div>
@@ -130,9 +128,9 @@
             <button type="button" @click="add_comp()" class="bg-green-500 w-min p-2 flex flex-row justify-center items-center gap-1 text-white text-center rounded-md outline-none outline-offset-0 hover:outline-2 hover:outline-red-300 transition transition-all">
                 <i class="fa-solid fa-plus"></i> Component
             </button>
-            <!-- <button @click="console.log(JSON.stringify(comp)+' '+JSON.stringify(oe_var))" class="bg-pink-500 w-min p-2 flex flex-row justify-center items-center gap-1 text-white text-center rounded-md outline-none outline-offset-0 hover:outline-2 hover:outline-red-300 transition transition-all" type="button"> -->
-            <!--     <i class="fa-solid fa-plus"></i> Component -->
-            <!-- </button> -->
+            <button @click="console.log(JSON.stringify(comp)+' '+JSON.stringify(oe_var))" class="bg-pink-500 w-min p-2 flex flex-row justify-center items-center gap-1 text-white text-center rounded-md outline-none outline-offset-0 hover:outline-2 hover:outline-red-300 transition transition-all" type="button">
+            <i class="fa-solid fa-plus"></i> Component
+            </button>
         </div>
 
         <div class="overflow-x-auto pt-2 pb-4">
