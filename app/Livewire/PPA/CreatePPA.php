@@ -2,8 +2,12 @@
 
 namespace App\Livewire\PPA;
 
+use App\Models\Ppa;
+use App\Models\Reference;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Illuminate\Http\Request;
+use App\Models\Aip;
 
 class CreatePPA extends Component
 {
@@ -78,5 +82,49 @@ class CreatePPA extends Component
         ]);
     }
 
+    public function result(Request $request){
+        $aip = new Aip;
+        $ppa = new Ppa;
+        $year_query = Aip::where('year', $request->ppa['year'])->first();
+
+        $aip_id = $this->aip_id_fetcher($aip, $request);
+        // $ppa_id = $this->ppa_creator($ppa, $aip_id, $request);
+        $ppa_id = 1;
+        echo $uwu;
+
+        return view(
+            'test', [
+                'req' => json_encode($request->ppa),
+                'isThere' => $aip_id,]
+        );
+    }
+
+    private function aip_id_fetcher(Aip $aip, Request $request){
+        // print($request);
+        $id = Aip::where('year', $request->ppa['year'])->first()->id;
+
+        // TODO: make sure that smth like '202x' is rejected (intval converts it to 202)
+        if (is_null($id) && is_int(intval($request->ppa['year']))) {
+            $aip->year = $request->ppa['year'];
+            $aip->save();
+            $id = Aip::where('year', $request->ppa['year'])->first()->id;
+        }
+
+        return $id;
+    }
+
+    private function ppa_creator(Ppa $ppa, int $aip_id, Request $request) {
+        // print($request);
+        $ppa->aip_key = $aip_id;
+        $ppa->status = $request->ppa['ppa_status'];
+        $ppa->sector = $request->ppa['sector'];
+        $ppa->subsector = $request->ppa['subsector'];
+        $ppa->proponent = $request->ppa['proponent'];
+        $ppa->mfo = $request->ppa['mfo'];
+        $ppa->impl_office = $request->ppa['impl_office'];
+        $ppa->aip_ref_code = $request->ppa['aip_ref_code'];
+        $ppa->save();
+
+        return $ppa->id;
     }
 }

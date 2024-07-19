@@ -8,4 +8,5 @@ Route::get('/', Landing::class);
 
 Route::prefix('ppa')->group(function () {
     Route::get('/', CreatePPA::class);
+    Route::post('/post', [CreatePPA::class,'result']);
 });
