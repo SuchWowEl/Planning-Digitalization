@@ -1,4 +1,11 @@
 # Side note:
+TODO:  
+* summary of object expenditure !!!
+* reinsert `require` to input fields
+* include npm *somehow* to docker
+* update erd/erm (reference,)
+* validate dates in details_section
+
 For Dev environment (not yet tested for staging or prod), install `npm` then run in the directory:
 ```
 npm install -D tailwindcss postcss autoprefixer
