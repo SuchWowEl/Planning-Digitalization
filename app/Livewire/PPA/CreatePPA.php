@@ -65,12 +65,13 @@ class CreatePPA extends Component
         'r_office' => 'Responsible Office/s',
     ];
 
-    public function mount(int $id = null)
+    public function mount(int $ppa_id = null)
     {
-        $this->section1->setSection1($id);
+        $this->section1->setSection1($ppa_id);
+        // $this->section2->setSection2($ppa_id);
     }
 
-    public function save(int $id)
+    public function save()
     {
         $the_id = $this->section1->update();
     }

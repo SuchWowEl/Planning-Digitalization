@@ -36,14 +36,14 @@ class PpaSection1 extends Form
     // #[Validate('required|min:5')]
     public $proponent = '';
 
-    public function setSection1($id)
+    public function setSection1($ppa_id)
     {
         $ppa = null;
-        if ($id == null) {
+        if ($ppa_id == null) {
             $ppa = new Ppa;
         }
         else {
-            $ppa = Ppa::find($id);
+            $ppa = Ppa::find($ppa_id);
             $aip = Aip::find($ppa->aip_key);
             // $this->ppa->aip_key = $aip->year;
         }

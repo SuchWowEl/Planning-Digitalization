@@ -5,7 +5,7 @@
             {{ implode(',', session('status')) }}
         </div>
     @endif
-    <form class="gap-4 flex flex-col" method="post" wire:submit="save(9)"
+    <form class="gap-4 flex flex-col" method="post" wire:submit="save"
         onkeydown="if(event.keyCode === 13) {
             return false;
         }"
