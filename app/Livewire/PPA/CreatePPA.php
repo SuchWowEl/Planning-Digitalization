@@ -2,6 +2,7 @@
 
 namespace App\Livewire\PPA;
 
+use App\Livewire\Forms\PpaSection1;
 use App\Models\Ppa;
 use App\Models\Reference;
 use Livewire\Attributes\Title;
@@ -11,6 +12,7 @@ use App\Models\Aip;
 
 class CreatePPA extends Component
 {
+    public PpaSection1 $section1;
     public $subsector_map = [
         1 =>
         [   "6" => "Education",
@@ -25,7 +27,7 @@ class CreatePPA extends Component
         ],
         3 =>
         [   "13" => "Agriculture/Veterinary Services",
-            "14" => "Entrepreneurship, Businiess and Industry Promotion",
+            "14" => "Entrepreneurship, Business and Industry Promotion",
         ],
         4 =>
         [   "15" => "Development Administration",
@@ -63,6 +65,15 @@ class CreatePPA extends Component
         'r_office' => 'Responsible Office/s',
     ];
 
+    public function mount(int $id = null)
+    {
+        $this->section1->setSection1($id);
+    }
+
+    public function save(int $id)
+    {
+        $the_id = $this->section1->update();
+    }
     #[Title('PPA Form')]
     public function render()
     {
@@ -90,7 +101,7 @@ class CreatePPA extends Component
         $aip_id = $this->aip_id_fetcher($aip, $request);
         // $ppa_id = $this->ppa_creator($ppa, $aip_id, $request);
         $ppa_id = 1;
-        echo $uwu;
+        // echo $uwu;
 
         return view(
             'test', [

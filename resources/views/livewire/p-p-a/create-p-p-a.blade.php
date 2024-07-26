@@ -1,5 +1,11 @@
 <div class="min-h-[calc(100vh-4rem)] w-full bg-sky-200 lg:px-32 px-3 pt-4">
-    <form class="gap-4 flex flex-col" method="post" action="{{ url('ppa/post') }}"
+    @if (session('status'))
+        <div class="alert alert-success">
+            {{ implode(',', array_keys(session('status'))) }}
+            {{ implode(',', session('status')) }}
+        </div>
+    @endif
+    <form class="gap-4 flex flex-col" method="post" wire:submit="save(9)"
         onkeydown="if(event.keyCode === 13) {
             return false;
         }"
@@ -35,10 +41,10 @@
                 @endphp
 
                 <div class="flex flex-row">
-                <label for="status" class="mr-5">PPA Status:</label>
+                <label class="mr-5">PPA Status:</label>
                 @foreach ($ppa_statuses as $entry => $value)
                 <div class="flex align-middle">
-                    <input type="radio" id="{{ $entry }}" name="ppa[ppa_status]" value="{{ $entry }}" x-model="ppa_stat" required>
+                    <input type="radio" id="{{ $entry }}" wire:model="section1.status" value="{{ $entry }}" required>
                     <label for="{{ $entry }}" class="ml-1 mr-3 align-middle">{{ $value }}</label><br>
                 </div>
                 @endforeach
@@ -46,11 +52,15 @@
 
                 <div>
                     <label for="year">Year:</label>
-                    <input :value="new Date().getFullYear()" type="number" id="year" name="ppa[year]" class="border-b-2 w-20 text-center outline-none focus:border-gray-300 transition"></input>
+                    <!-- TODO: should user choose what year to use prior viewing this form or let them choose as they see this form?
+                    -->
+                    <input wire:model="section1.aip_key" type="number" id="year" name="ppa[year]" class="border-b-2 w-20 text-center outline-none focus:border-gray-300 transition" disabled></input>
                 </div>
 
             </div>
-            <div class="md:grid md:grid-cols-2 gap-3 mt-4" x-data="{ chosen_sector: 1 }">
+            <div class="md:grid md:grid-cols-2 gap-3 mt-4" x-data="{ chosen_sector: 1, chosen_subsector: 6 }"
+            x-init="$watch('chosen_sector', () => chosen_subsector = $refs.subsector_select.value)"
+            >
                 @foreach ($ppa_info as $entry => $value)
 
                     @if ($loop->index == 3 or $loop->index == 0) <!-- checks if 1st or 4th element -->
@@ -59,19 +69,19 @@
 
                     <label for="{{ $entry }}" class="col-span-1">{{ $value }}:</label>
                     @if ($entry == 'sector')
-                        <select id="{{ $entry }}" name="ppa[{{ $entry }}]" class="border-2 outline-none focus:border-gray-300 transition col-span-2 px-2 rounded-md" x-model="chosen_sector" >
+                        <select id="{{ $entry }}" wire:model="section1.{{ $entry }}" class="border-2 outline-none focus:border-gray-300 transition col-span-2 px-2 rounded-md" x-modelable="chosen_sector" x-model="$wire.section1.{{ $entry }}">
                             @foreach ($sector_map as $index => $sector)
-                            <option value="{{ $index }}" {{ $loop->first ? 'selected' : ''}} >{{ $sector }}</option>
+                                <option value="{{ $index }}">{{ $sector }}</option>
                             @endforeach
                         </select>
                     @elseif ($entry == 'subsector')
-                        <select id="{{ $entry }}" name="ppa[{{ $entry }}]" class="border-2 outline-none focus:border-gray-300 transition col-span-2 px-2 rounded-md">
+                        <select id="{{ $entry }}" x-ref="subsector_select" wire:model="section1.{{ $entry }}" class="border-2 outline-none focus:border-gray-300 transition col-span-2 px-2 rounded-md" x-modelable="chosen_subsector" x-model="$wire.section1.subsector">
                             <template x-for="(subsector, index) in $wire.subsector_map[chosen_sector]">
-                                <option x-text="subsector" :value="index"></option>
+                                <option x-text="subsector" :value="index" :selected="$wire.section1.subsector == index" ></option>
                             </template>
                         </select>
                     @else
-                        <input type="text" id="{{ $entry }}" name="ppa[{{ $entry }}]" class="border-2 outline-none focus:border-gray-300 transition col-span-2 px-2 rounded-md"></input>
+                        <input type="text" id="{{ $entry }}" wire:model="section1.{{ $entry }}" class="border-2 outline-none focus:border-gray-300 transition col-span-2 px-2 rounded-md"></input>
                     @endif
 
                     @if ($loop->index == 2 or $loop->last) <!-- checks if 3rd or last element -->
