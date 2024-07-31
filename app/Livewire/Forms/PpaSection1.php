@@ -49,7 +49,6 @@ class PpaSection1 extends Form
         }
         $this->ppa = $ppa;
         $this->status = $this->ppa->status;
-        // $this->aip_key = $this->ppa->aip_key;
         $this->aip_key = Aip::find($ppa->aip_key)->year ?? 2024;
         $this->sector = $this->ppa->sector ?? 1;
         $this->subsector = $this->ppa->subsector ?? 6;
@@ -79,9 +78,11 @@ class PpaSection1 extends Form
             ['id' => $this->ppa->id],
             $to_input
         );
-        $to_show = $this->all();
+        $to_show = collect($this);
         $to_show['ppa_new_id'] = $last_saved->id;
+        $to_show = collect($this)->toJson();
         session()->flash('status', $to_show);
+        $this->ppa->fresh();
         return $last_saved->id;
     }
 }

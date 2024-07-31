@@ -6,7 +6,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', Landing::class);
 
-Route::prefix('ppa')->group(function () {
-    Route::get('/', CreatePPA::class);
-    Route::post('/post', [CreatePPA::class,'result']);
-});
+Route::prefix('ppa')->group(
+    function () {
+        Route::get('/', CreatePPA::class);
+        Route::get('/{ppa_id}', CreatePPA::class)->name('ppa.update');
+    }
+);

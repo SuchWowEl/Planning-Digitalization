@@ -3,6 +3,7 @@
 namespace App\Livewire\PPA;
 
 use App\Livewire\Forms\PpaSection1;
+use App\Livewire\Forms\PpaSection2;
 use App\Models\Ppa;
 use App\Models\Reference;
 use Livewire\Attributes\Title;
@@ -13,6 +14,9 @@ use App\Models\Aip;
 class CreatePPA extends Component
 {
     public PpaSection1 $section1;
+    public PpaSection2 $section2;
+    public Reference $reference;
+
     public $subsector_map = [
         1 =>
         [   "6" => "Education",
@@ -68,26 +72,38 @@ class CreatePPA extends Component
     public function mount(int $ppa_id = null)
     {
         $this->section1->setSection1($ppa_id);
-        // $this->section2->setSection2($ppa_id);
+        $this->section2->setSection2($ppa_id);
+        $this->reference = new Reference;
     }
 
     public function save()
     {
-        $the_id = $this->section1->update();
+        $ppa_id = $this->section1->update();
+        $this->section2->update($ppa_id);
     }
+
+    public function redir(int $id){
+        $the_id = $this->section1->update();
+        return view(
+            'test', [
+                'req' => $id,
+                'isThere' => true,
+            ]
+        );
+    }
+
     #[Title('PPA Form')]
     public function render()
     {
-        $reference = new Reference;
-        $oe_acode_json = $reference->oeAcodeGetter();
-        $cc_typo_json = $reference->ccTypesGetter();
+        $oe_acode_json = $this->reference->oeAcodeGetter();
+        $cc_typo_json = $this->reference->ccTypesGetter();
 
         return view('livewire.p-p-a.create-p-p-a', [
             'kobe' => [1 =>'bryant', 2=> '24'],
             'lebronze' => ['james'],
             // 'comp' => (object)[1 => ['name' => '', 'component' => [(object)[]]]],
             'comp' => (object)[1 => ['name' => '', 'component' => (object)[0=>(object)[]]]],
-            'ind' => (object)[10 => 'b', 12 => 'a'],
+            // 'ind' => (object)[10 => 'b', 12 => 'a'],
             'oe_acode_json' => $oe_acode_json,
             'cc_typo_json' => $cc_typo_json
             // 'comp' => {0: {'name': '', 'component': [{}]}}
