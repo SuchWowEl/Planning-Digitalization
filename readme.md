@@ -3,8 +3,15 @@ TODO:
 * summary of object expenditure !!!
 * reinsert `require` to input fields
 * include npm *somehow* to docker
-* update erd/erm (reference,)
+* update erd/erm 
+    * reference (add key column)
+    * details (required reference relationship)
+    * indicators (remove table & multi-value, json col in details)
+    * date (remove table, 2 date col in details)
 * validate dates in details_section
+
+Progress:
+* Section1 (Ppa, Aip): C~~R~~U~~D~~
 
 For Dev environment (not yet tested for staging or prod), install `npm` then run in the directory:
 ```
