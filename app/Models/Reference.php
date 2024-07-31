@@ -23,11 +23,11 @@ class Reference extends Model
 
     public $oe_codes;
     public $cc_typos;
-    public $waley = 'kobe';
+    protected $fillable = [];
 
-    public function wala()
+    public function details(): BelongsToMany
     {
-        return 1;
+        return $this->belongsToMany(Details::class, 'details_funds', 'fund_id', 'details_id');
     }
 
     public function oeAcodeGetter()

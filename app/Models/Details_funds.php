@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Ppa extends Model
+class Details_funds extends Model
 {
     use HasFactory;
 
-    protected $table = 'ppa';
+    protected $table = 'details_funds';
     public  $timestamps = false;
+    protected $primaryKey = 'details_id';
 
     // NOTE: Possible
-    protected $fillable = ['status','aip_key','sector','subsector', 'impl_office','aip_ref_code','mfo','proponent'];
+    protected $fillable = ['details_id','fund_id'];
 }
