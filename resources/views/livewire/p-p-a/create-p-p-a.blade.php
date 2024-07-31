@@ -1,10 +1,4 @@
 <div class="min-h-[calc(100vh-4rem)] w-full bg-sky-200 lg:px-32 px-3 pt-4">
-    @if (session('status'))
-        <div class="alert alert-success">
-            {{ implode(',', array_keys(session('status'))) }}
-            {{ implode(',', session('status')) }}
-        </div>
-    @endif
     <form class="gap-4 flex flex-col" method="post" wire:submit="save"
         onkeydown="if(event.keyCode === 13) {
             return false;
@@ -18,10 +12,35 @@
         x-data="{
             ppa_stat: '',
             sof: [],
-            ssof: [],
+            ssof: $wire.section2.subfund,
+            gfp_arr: Object.keys($wire.section2.fund_gfp).concat(['GF - Proper']),
+            tf_arr: Object.keys($wire.section2.fund_tf),
         }"
+        x-modelable="ppa_stat" x-model="$wire.section1.status"
+        x-init="
+        let ssof_checker = function () {
+            // if gf subsection has check and gfp fund isnt checked
+            if(gfp_arr.filter(x => ssof.includes(x)).length >= 1 && !sof.includes('General Fund Proper')) {
+                sof.push('General Fund Proper');
+            } else if (gfp_arr.filter(x => ssof.includes(x)).length == 0) {
+                sof = sof.filter(item => item !== 'General Fund Proper');
+            }
+            if(tf_arr.filter(x => ssof.includes(x)).length >= 1 && !sof.includes('Trust Fund')) {
+                sof.push('Trust Fund');
+            } else if (tf_arr.filter(x => ssof.includes(x)).length == 0) {
+                sof = sof.filter(item => item !== 'Trust Fund');
+            }
+        }
+        $watch('ssof', ssof_checker);
+        ssof_checker();
+        "
     >
         @csrf
+        @if (session('status'))
+            <div class="alert alert-success">
+                {{ session('status') }}
+            </div>
+        @endif
         <div class="border-2 border-white h-full w-full bg-white text-black rounded-md p-6 shadow-lg">
             <div class="flex flex-row flex-wrap w-full items-center justify-between">
                 @php
